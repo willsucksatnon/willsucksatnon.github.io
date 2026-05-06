@@ -1,41 +1,44 @@
-/**
- * Universal Download Function
- */
 function downloadFile(filename, text) {
     const element = document.createElement('a');
-    // Using 'data:attachment/text' helps some browsers force a download dialog
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
     element.setAttribute('download', filename);
-
     element.style.display = 'none';
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
 }
 
-/**
- * Main Logic - Runs once the page is loaded
- */
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Map the elements from your index.html
     const textArea = document.getElementById("text-val");
     const txtBtn = document.getElementById("export-btn");
     const mdBtn = document.getElementById("export-md-btn");
+    const previewBtn = document.getElementById("preview-btn");
+    const previewArea = document.getElementById("preview-area");
 
-    // 2. Handle Text Export
+    // 1. TXT Export
     if (txtBtn) {
-        txtBtn.addEventListener("click", () => {
-            const content = textArea.value;
-            downloadFile("my-file.txt", content);
-        });
+        txtBtn.onclick = () => downloadFile("export.txt", textArea.value);
     }
 
-    // 3. Handle Markdown Export
+    // 2. MD Export
     if (mdBtn) {
-        mdBtn.addEventListener("click", () => {
-            const content = textArea.value;
-            // .md files are just text files with a different extension
-            downloadFile("my-file.md", content);
-        });
+        mdBtn.onclick = () => downloadFile("export.md", textArea.value);
+    }
+
+    // 3. Preview Logic
+    if (previewBtn && previewArea) {
+        previewBtn.onclick = () => {
+            // Check if preview is currently hidden
+            if (previewArea.style.display === "none") {
+                // Show it and fill it with text
+                previewArea.textContent = textArea.value;
+                previewArea.style.display = "block";
+                previewBtn.textContent = "Hide Preview";
+            } else {
+                // Hide it
+                previewArea.style.display = "none";
+                previewBtn.textContent = "Show Preview";
+            }
+        };
     }
 });
