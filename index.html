@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export to TXT</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
+        textarea { width: 100%; height: 150px; margin-bottom: 10px; padding: 10px; }
+        button { 
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            border-radius: 5px; 
+        }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+
+    <h2>Text Exporter</h2>
+    <p>Type something below and click export to save it as a .txt file.</p>
+    
+    <!-- The content to export -->
+    <textarea id="text-val">Hello! This is the content that will be exported into your text file.</textarea>
+    <br/>
+    
+    <!-- The trigger button -->
+    <button id="export-btn">Download as .txt</button>
+
+    <script>
+        function download(filename, text) {
+            // 1. Create an invisible element to act as a download link
+            var element = document.createElement('a');
+            
+            // 2. Set the content as a data URI (encoded text)
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            
+            // 3. Set the file name
+            element.setAttribute('download', filename);
+
+            // 4. Trigger the click and remove the element
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        // Event listener for the button
+        document.getElementById("export-btn").addEventListener("click", function() {
+            var text = document.getElementById("text-val").value;
+            var filename = "my_export.txt";
+            
+            download(filename, text);
+        }, false);
+    </script>
+
+</body>
+</html>
